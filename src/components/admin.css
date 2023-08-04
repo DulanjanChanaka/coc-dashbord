@@ -1,0 +1,27 @@
+.container {
+  margin: 10px;
+}
+.headline {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+.slideadd  h3{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.formcontainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.formcontainer input {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 0px 30px ;
+}
