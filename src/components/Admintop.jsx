@@ -52,7 +52,7 @@ const Admintop = () => {
     const columns = [
       { field: 'description', headerName: 'Description', width: 200, resizable: true , className:"column"},
       { field: 'imageUrl', headerName: 'Image Url', width: 450, resizable: true ,className:"column"},
-      { field: 'baseurl', headerName: 'Base Url', width: 450, resizable: true ,className:"column"},
+      { field: 'baseurl', headerName: 'Base Url', width: 650, resizable: true ,className:"column"},
 
 
       {
