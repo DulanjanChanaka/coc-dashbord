@@ -50,9 +50,9 @@ const Adminalltable = () => {
       
   
     const columns = [
-      { field: 'description', headerName: 'Description', width: 200, resizable: true , className:"column"},
-      { field: 'imageUrl', headerName: 'Image Url', width: 450, resizable: true ,className:"column"},
-      { field: 'baseurl', headerName: 'Base Url', width: 850, resizable: true ,className:"column"},
+      { field: 'description', headerName: 'Description', width: 100, resizable: true , className:"column"},
+      { field: 'imageUrl', headerName: 'Image Url', width: 350, resizable: true ,className:"column"},
+      { field: 'baseurl', headerName: 'Base Url', width: 950, resizable: true ,className:"column"},
 
 
       {
