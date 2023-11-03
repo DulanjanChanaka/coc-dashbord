@@ -1,79 +1,62 @@
-import React, { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { getFirestore, deleteDoc, collection, onSnapshot, doc } from 'firebase/firestore';
-import { initializeApp } from 'firebase/app';
-
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDdyTqvViyqtLETSrNMzqFP-xM0NIa9lQ8",
-  authDomain: "clashlayouts-9d19d.firebaseapp.com",
-  projectId: "clashlayouts-9d19d",
-  storageBucket: "clashlayouts-9d19d.appspot.com",
-  messagingSenderId: "1073716509146",
-  appId: "1:1073716509146:web:56713b2e4bf310187b28e3"
-};
-initializeApp(firebaseConfig);
-const db = getFirestore();
 
 const Adminalltable = () => {
-    const [rows, setRows] = useState([]);
-  
-    useEffect(() => {
-      const fetchdata = onSnapshot(collection(db, 'allphoto'), (snapshot) => {
-        const data = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setRows(data);
-      });
-  
-      return () => {
-        fetchdata();
-      };
-    }, []);
-  
+  const [rows, setRows] = useState([]);
 
-      
-      const handleDelete = async (row) => {
-        try {
-         
-          const docRef = doc(db, 'allphoto', row.id);
-      
-          
-          await deleteDoc(docRef);
-      
-          console.log('Row deleted successfully:', row);
-        } catch (error) {
-          console.error('Error deleting row:', error);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Make a GET request to the external API
+        const response = await fetch('https://benevolent-kitsune-f1c5de.netlify.app/api/all-photo');
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
         }
-      };
-      
-  
-    const columns = [
-      { field: 'description', headerName: 'Description', width: 100, resizable: true , className:"column"},
-      { field: 'imageUrl', headerName: 'Image Url', width: 350, resizable: true ,className:"column"},
-      { field: 'baseurl', headerName: 'Base Url', width: 950, resizable: true ,className:"column"},
 
+        const data = await response.json();
 
-      {
-        field: 'delete',
-        headerName: 'Delete',
-        width: 100,
-        renderCell: (params) => (
-          <button onClick={() => handleDelete(params.row)}>Delete</button>
-        ),
-      },
-    ];
-  
-    return (
-      <div className='container'>
-        <div className='table'>
-          <DataGrid 
-          rows={rows} 
-          columns={columns} pageSize={5} />
-        </div>
-      </div>
-    );
+        // Add a unique ID to each row
+        const rowsWithId = data.map((row, index) => ({ id: index, ...row }));
+        setRows(rowsWithId);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleDelete = async (row) => {
+    try {
+      // Your delete logic here
+      console.log('Row deleted successfully:', row);
+    } catch (error) {
+      console.error('Error deleting row:', error);
+    }
   };
-  
-  export default Adminalltable;
+
+  const columns = [
+    { field: 'description', headerName: 'Description', width: 100, resizable: true, className: 'column' },
+    { field: 'imageUrl', headerName: 'Image Url', width: 350, resizable: true, className: 'column' },
+    { field: 'baseurl', headerName: 'Base Url', width: 950, resizable: true, className: 'column' },
+    {
+      field: 'delete',
+      headerName: 'Delete',
+      width: 100,
+      renderCell: (params) => (
+        <button onClick={() => handleDelete(params.row)}>Delete</button>
+      ),
+    },
+  ];
+
+  return (
+    <div className="container">
+      <div className="table">
+        <DataGrid rows={rows} columns={columns} pageSize={5} getRowId={(row) => row.id} />
+      </div>
+    </div>
+  );
+};
+
+export default Adminalltable;

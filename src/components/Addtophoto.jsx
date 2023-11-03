@@ -24,30 +24,40 @@ const db = getFirestore(app);
 const Addtopphoto = () => {
   const [description, setDescription] = useState('');
   const [imageUrl, setImageUrl] = useState('');
-  const [baseurl , setBaseurl] = useState('')
-
+  const [baseurl, setBaseurl] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const docRef = await addDoc(collection(db, 'topphoto'), {
+      const data = {
         description,
         imageUrl,
         baseurl,
+      };
 
+      // Send a POST request to the new URL
+      const response = await fetch('https://benevolent-kitsune-f1c5de.netlify.app/api/top-photo', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
       });
-      console.log('Document written with ID: ', docRef.id);
-      // Reset form fields
-      setDescription ("");
-      setImageUrl("");
-      setBaseurl("")
 
+      if (response.ok) {
+        console.log('Data successfully sent.');
+        // Reset form fields
+        setDescription("");
+        setImageUrl("");
+        setBaseurl("");
+      } else {
+        console.error('Failed to send data.');
+      }
     } catch (error) {
-      console.error('Error adding document: ', error);
+      console.error('Error sending data: ', error);
     }
   };
-
   return (
     <>
     <Navbar/>
